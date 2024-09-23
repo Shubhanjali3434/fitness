@@ -1,23 +1,50 @@
-import logo from './logo.svg';
+
+import React, { useState } from 'react';
 import './App.css';
 
 function App() {
+  const [exercise, setExercise] = useState('');
+  const [duration, setDuration] = useState('');
+  const [workouts, setWorkouts] = useState([]);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (exercise && duration) {
+      setWorkouts([...workouts, { exercise, duration }]);
+      setExercise('');
+      setDuration('');
+    }
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>Fitness Tracker</h1>
+      <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          placeholder="Exercise"
+          value={exercise}
+          onChange={(e) => setExercise(e.target.value)}
+          required
+        />
+        <input
+          type="number"
+          placeholder="Duration (minutes)"
+          value={duration}
+          onChange={(e) => setDuration(e.target.value)}
+          required
+        />
+        <button type="submit">Add Workout</button>
+      </form>
+
+      <h2>Workout Log</h2>
+      <ul>
+        {workouts.map((workout, index) => (
+          <li key={index}>
+            {workout.exercise} - {workout.duration} minutes
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
